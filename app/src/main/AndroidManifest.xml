@@ -18,6 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.crashlytics.ApiKey"
+            android:value="1122f5a2e67226ae0d83922514fe1217d79ae2ab" />
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
