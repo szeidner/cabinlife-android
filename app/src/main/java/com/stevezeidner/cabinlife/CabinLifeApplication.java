@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
+import com.stevezeidner.cabinlife.di.Injector;
 
 import timber.log.Timber;
 
@@ -15,6 +16,10 @@ public class CabinLifeApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // inject self
+        Injector.INSTANCE.initializeMainComponent(this);
+
         // start crashlytics
         Crashlytics.start(this);
 

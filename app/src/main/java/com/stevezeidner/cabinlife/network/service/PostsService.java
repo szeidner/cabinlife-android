@@ -1,5 +1,6 @@
 package com.stevezeidner.cabinlife.network.service;
 
+import com.stevezeidner.cabinlife.di.Injector;
 import com.stevezeidner.cabinlife.network.model.Post;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class PostsService {
     private PostsAPI postsAPI;
 
     public PostsService() {
-
+        Injector.INSTANCE.getMainComponent().inject(this);
 
         postsAPI = retrofit.create(PostsAPI.class);
     }

@@ -1,7 +1,10 @@
 package com.stevezeidner.cabinlife.di;
 
 
+import com.stevezeidner.cabinlife.CabinLifeApplication;
+import com.stevezeidner.cabinlife.di.component.DaggerMainComponent;
 import com.stevezeidner.cabinlife.di.component.MainComponent;
+import com.stevezeidner.cabinlife.di.module.AppContextModule;
 
 /**
  * Created by szeidner on 9/8/15.
@@ -15,9 +18,11 @@ public enum Injector {
     private Injector(){
     }
 
-    public void initializeApplicationComponent() {
-//        MainComponent mainComponent = DaggerMainComponent.builder().build();
-//        this.mainComponent = mainComponent;
+    public void initializeMainComponent(CabinLifeApplication application) {
+        MainComponent mainComponent = DaggerMainComponent.builder()
+                .appContextModule(new AppContextModule(application))
+                .build();
+        this.mainComponent = mainComponent;
     }
 
 
