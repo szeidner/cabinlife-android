@@ -15,16 +15,23 @@ import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 import com.stevezeidner.cabinlife.di.Injector;
+import com.stevezeidner.cabinlife.network.model.Post;
+import com.stevezeidner.cabinlife.network.service.PostsService;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    Retrofit retrofit;
+    PostsService postsService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        getAllPosts();
     }
 
     @Override
@@ -105,5 +114,29 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void getAllPosts() {
+        postsService.getAPI().getPosts()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Post>>() {
+                    @Override
+                    public void onCompleted() {
+                        Timber.e("Completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e("Error: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<Post> posts) {
+                        for(Post p : posts) {
+                            Timber.d(p.getTitle());
+                        }
+                    }
+                });
     }
 }

@@ -1,6 +1,7 @@
 package com.stevezeidner.cabinlife.di.module;
 
 import com.stevezeidner.cabinlife.core.Constants;
+import com.stevezeidner.cabinlife.network.service.PostsService;
 
 import javax.inject.Singleton;
 
@@ -23,6 +24,12 @@ public class MainModule {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    PostsService providePostsService() {
+        return new PostsService();
     }
 
 }

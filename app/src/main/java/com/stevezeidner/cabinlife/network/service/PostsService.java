@@ -32,7 +32,6 @@ public class PostsService {
 
     public interface PostsAPI {
         @GET("posts")
-        public Observable<List<Post>>
-            getPosts();
+        Observable<List<Post>> getPosts();
     }
 }
