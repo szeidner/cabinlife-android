@@ -6,12 +6,15 @@ import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
 import com.stevezeidner.cabinlife.di.Injector;
 
+import mortar.MortarScope;
 import timber.log.Timber;
 
 /**
  * Created by szeidner on 10/9/15.
  */
 public class CabinLifeApplication extends Application {
+
+    private MortarScope rootScope;
 
     @Override
     public void onCreate() {
@@ -30,6 +33,15 @@ public class CabinLifeApplication extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+    }
+
+    @Override
+    public Object getSystemService(String name) {
+        if (rootScope == null) {
+            rootScope = MortarScope.buildRootScope().build("Root");
+        }
+
+        return rootScope.hasService(name) ? rootScope.getService(name) : super.getSystemService(name);
     }
 
 }

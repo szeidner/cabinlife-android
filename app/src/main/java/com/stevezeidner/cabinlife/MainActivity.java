@@ -22,10 +22,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import mortar.MortarScope;
+import mortar.bundler.BundleServiceRunner;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static mortar.MortarScope.buildChild;
+import static mortar.MortarScope.findChild;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +43,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         Injector.INSTANCE.getMainComponent().inject(this);
+
+        BundleServiceRunner.getBundleServiceRunner(this).onCreate(savedInstanceState);
 
         Crashlytics.start(this);
         setContentView(R.layout.activity_main);
@@ -63,6 +70,34 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         getAllPosts();
+    }
+
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        BundleServiceRunner.getBundleServiceRunner(this).onSaveInstanceState(outState);
+    }
+
+    @Override protected void onDestroy() {
+        if (isFinishing()) {
+            MortarScope activityScope = findChild(getApplicationContext(), getScopeName());
+            if (activityScope != null) activityScope.destroy();
+        }
+
+        super.onDestroy();
+    }
+
+    @Override public Object getSystemService(String name) {
+        MortarScope activityScope = findChild(getApplicationContext(), getScopeName());
+
+        if (activityScope == null) {
+            activityScope = buildChild(getApplicationContext()) //
+                    .withService(BundleServiceRunner.SERVICE_NAME, new BundleServiceRunner())
+                    //.withService(DaggerService.SERVICE_NAME, createComponent(MainComponent.class))
+                    .build(getScopeName());
+        }
+
+        return activityScope.hasService(name) ? activityScope.getService(name)
+                : super.getSystemService(name);
     }
 
     @Override
@@ -138,5 +173,9 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
+    }
+
+    private String getScopeName() {
+        return getClass().getName();
     }
 }
