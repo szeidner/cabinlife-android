@@ -3,6 +3,7 @@ package com.stevezeidner.cabinlife;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
@@ -27,17 +28,19 @@ public class CabinLifeApplication extends Application {
             Timber.plant(new Timber.DebugTree());
         }
 
-        // start crashlytics
+        // start Crashlytics
         Crashlytics.start(this);
 
         // start leak detection
         LeakCanary.install(this);
 
-        if (mortarScope == null) {
+        // initialize Fresco image library
+        Fresco.initialize(this);
 
+        // create component and mortar scope if needed
+        if (mortarScope == null) {
             Component component = DaggerCabinLifeApplication_Component.create();
             component.inject(this);
-
             mortarScope = MortarScope.buildRootScope()
                     .withService(DaggerService.SERVICE_NAME, component)
                     .build("Root");

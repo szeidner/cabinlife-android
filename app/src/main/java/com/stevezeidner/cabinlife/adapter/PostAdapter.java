@@ -1,12 +1,14 @@
 package com.stevezeidner.cabinlife.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.network.model.Post;
 
@@ -37,7 +39,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Post post = posts.get(i);
-        viewHolder.textView.setText(post.getTitle());
+
+        viewHolder.title.setText(post.getTitle());
+        viewHolder.description.setText(post.getSummary());
+        viewHolder.photo.setImageURI(Uri.parse(post.getImage()));
     }
 
     @Override
@@ -47,8 +52,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @Bind(R.id.cabin_title)
-        public TextView textView;
+        @Bind(R.id.row_posts_photo)
+        public SimpleDraweeView photo;
+        @Bind(R.id.row_posts_title)
+        public TextView title;
+        @Bind(R.id.row_posts_description)
+        public TextView description;
 
         private Listener listener;
 

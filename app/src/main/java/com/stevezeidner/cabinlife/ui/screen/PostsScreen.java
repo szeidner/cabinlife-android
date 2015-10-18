@@ -90,6 +90,11 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainActi
                             if (!hasView()) return;
                             Timber.d("Success loaded %s", returnedPosts.size());
 
+                            // add cache busting
+                            for (Post p : returnedPosts) {
+                                p.setImage(p.getImage() + "?cache=" + System.nanoTime());
+                            }
+
                             posts.clear();
                             posts.addAll(returnedPosts);
                             adapter.notifyDataSetChanged();
