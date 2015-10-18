@@ -4,7 +4,9 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.squareup.leakcanary.LeakCanary;
-import com.stevezeidner.cabinlife.di.Injector;
+import com.stevezeidner.cabinlife.di.AppDependencies;
+import com.stevezeidner.cabinlife.di.DaggerScope;
+import com.stevezeidner.cabinlife.di.DaggerService;
 
 import mortar.MortarScope;
 import timber.log.Timber;
@@ -14,14 +16,16 @@ import timber.log.Timber;
  */
 public class CabinLifeApplication extends Application {
 
-    private MortarScope rootScope;
+    private MortarScope mortarScope;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        // inject self
-        Injector.INSTANCE.initializeMainComponent(this);
+        // start logger
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
 
         // start crashlytics
         Crashlytics.start(this);
@@ -29,19 +33,34 @@ public class CabinLifeApplication extends Application {
         // start leak detection
         LeakCanary.install(this);
 
-        // start logger
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
+        if (mortarScope == null) {
+
+            Component component = DaggerCabinLifeApplication_Component.create();
+            component.inject(this);
+
+            mortarScope = MortarScope.buildRootScope()
+                    .withService(DaggerService.SERVICE_NAME, component)
+                    .build("Root");
         }
+
     }
 
     @Override
     public Object getSystemService(String name) {
-        if (rootScope == null) {
-            rootScope = MortarScope.buildRootScope().build("Root");
+        if (mortarScope == null) {
+            Component component = DaggerCabinLifeApplication_Component.create();
+            mortarScope = MortarScope.buildRootScope()
+                    .withService(DaggerService.SERVICE_NAME, component)
+                    .build("Root");
         }
 
-        return rootScope.hasService(name) ? rootScope.getService(name) : super.getSystemService(name);
+        return mortarScope.hasService(name) ? mortarScope.getService(name) : super.getSystemService(name);
     }
 
+
+    @dagger.Component
+    @DaggerScope(Component.class)
+    public interface Component extends AppDependencies {
+        void inject(CabinLifeApplication app);
+    }
 }

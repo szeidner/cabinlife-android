@@ -1,5 +1,7 @@
 package com.stevezeidner.cabinlife.di;
 
-public interface AppDependencies {
+import com.stevezeidner.cabinlife.network.RestClient;
 
+public interface AppDependencies {
+    RestClient restClient();
 }

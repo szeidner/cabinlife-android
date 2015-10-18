@@ -2,12 +2,12 @@ package com.stevezeidner.cabinlife.mortar;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.util.Log;
 import android.view.LayoutInflater;
 
 import flow.path.Path;
 import flow.path.PathContextFactory;
 import mortar.MortarScope;
+import timber.log.Timber;
 
 /**
  * @author Lukasz Piliszczuk - lukasz.pili@gmail.com
@@ -38,7 +38,7 @@ public class BasicMortarContextFactory implements PathContextFactory {
 
         static void destroyScope(Context context) {
             MortarScope scope = MortarScope.getScope(context);
-            Log.d(BasicMortarContextFactory.class.getCanonicalName(), "MortarContextFactory - Destroy scope " + scope.getName());
+            Timber.d("MortarContextFactory - Destroy scope " + scope.getName());
             scope.destroy();
         }
 

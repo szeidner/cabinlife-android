@@ -7,11 +7,11 @@ import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.adapter.PostAdapter;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
-import com.stevezeidner.cabinlife.di.component.MainComponent;
 import com.stevezeidner.cabinlife.flow.Layout;
 import com.stevezeidner.cabinlife.mortar.ScreenComponentFactory;
+import com.stevezeidner.cabinlife.network.RestClient;
 import com.stevezeidner.cabinlife.network.model.Post;
-import com.stevezeidner.cabinlife.network.service.PostsService;
+import com.stevezeidner.cabinlife.ui.activity.MainActivity;
 import com.stevezeidner.cabinlife.ui.view.PostsView;
 
 import java.util.ArrayList;
@@ -27,16 +27,16 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Layout(R.layout.screen_posts)
-public class PostsScreen extends Path implements ScreenComponentFactory<MainComponent> {
+public class PostsScreen extends Path implements ScreenComponentFactory<MainActivity.Component> {
 
     @Override
-    public Object createComponent(MainComponent parent) {
+    public Object createComponent(MainActivity.Component parent) {
         return DaggerPostsScreen_Component.builder()
                 .component(parent)
                 .build();
     }
 
-    @dagger.Component(dependencies = MainComponent.class)
+    @dagger.Component(dependencies = MainActivity.Component.class)
     @DaggerScope(Component.class)
     public interface Component extends AppDependencies {
         void inject(PostsView view);
@@ -45,11 +45,15 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainComp
     @DaggerScope(Component.class)
     public static class Presenter extends ViewPresenter<PostsView> implements PostAdapter.Listener {
 
-        @Inject
-        PostsService postsService;
+        private final RestClient restClient;
 
         private PostAdapter adapter;
         private List<Post> posts = new ArrayList<>();
+
+        @Inject
+        public Presenter(RestClient restClient) {
+            this.restClient = restClient;
+        }
 
         @Override
         protected void onLoad(Bundle savedInstanceState) {
@@ -66,7 +70,7 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainComp
         }
 
         private void load() {
-            postsService.getAPI().getPosts()
+            restClient.getPostsService().getPosts()
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<List<Post>>() {
@@ -82,12 +86,12 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainComp
                         }
 
                         @Override
-                        public void onNext(List<Post> posts) {
+                        public void onNext(List<Post> returnedPosts) {
                             if (!hasView()) return;
-                            Timber.d("Success loaded %s", posts.size());
+                            Timber.d("Success loaded %s", returnedPosts.size());
 
                             posts.clear();
-                            posts.addAll(posts);
+                            posts.addAll(returnedPosts);
                             adapter.notifyDataSetChanged();
 
                             getView().show();
