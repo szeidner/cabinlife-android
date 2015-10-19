@@ -42,6 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         viewHolder.title.setText(post.getTitle());
         viewHolder.description.setText(post.getSummary());
+        viewHolder.location.setText(post.getLatitude() + ", " + post.getLongitude());
         viewHolder.photo.setImageURI(Uri.parse(post.getImage()));
     }
 
@@ -56,6 +57,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public SimpleDraweeView photo;
         @Bind(R.id.row_posts_title)
         public TextView title;
+        @Bind(R.id.row_posts_location)
+        public TextView location;
         @Bind(R.id.row_posts_description)
         public TextView description;
 

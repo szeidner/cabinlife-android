@@ -11,6 +11,7 @@ import com.stevezeidner.cabinlife.di.DaggerService;
 
 import mortar.MortarScope;
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
  * Created by szeidner on 10/9/15.
@@ -45,6 +46,13 @@ public class CabinLifeApplication extends Application {
                     .withService(DaggerService.SERVICE_NAME, component)
                     .build("Root");
         }
+
+        // custom fonts
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                        .setDefaultFontPath("fonts/Montserrat-UltraLight.ttf")
+                        .setFontAttrId(R.attr.fontPath)
+                        .build()
+        );
 
     }
 

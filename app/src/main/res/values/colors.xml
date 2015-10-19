@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#261e19</color>
     <color name="colorAccent">#6cb3c5</color>
     <color name="colorNav">#303135</color>
+
+    <color name="postTitle">#0e0e0e</color>
+    <color name="postDescription">#000000</color>
+    <color name="postLocation">#d6d6d6</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.stevezeidner.cabinlife.ui.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +30,7 @@ import flow.path.Path;
 import flow.path.PathContainerView;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static mortar.MortarScope.findChild;
 
@@ -41,6 +43,11 @@ public class MainActivity extends AppCompatActivity
 
     MortarScope mortarScope;
     FlowDelegate flowDelegate;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

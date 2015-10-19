@@ -28,6 +28,9 @@ public class Post {
     @SerializedName("favorites")
     @Expose
     private Integer favorites;
+    @SerializedName("latitude")
+    @Expose
+    private String latitude;
     @SerializedName("longitude")
     @Expose
     private String longitude;
@@ -117,6 +120,20 @@ public class Post {
      */
     public void setFavorites(Integer favorites) {
         this.favorites = favorites;
+    }
+
+    /**
+     * @return The Latitude
+     */
+    public String getLatitude() {
+        return latitude;
+    }
+
+    /**
+     * @param latitude The Latitude
+     */
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     /**
