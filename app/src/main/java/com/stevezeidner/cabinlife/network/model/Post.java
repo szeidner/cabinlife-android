@@ -37,7 +37,7 @@ public class Post {
     @SerializedName("summary")
     @Expose
     private String summary;
-
+    @SerializedName("body")
     @Expose
     private String body;
 
@@ -167,8 +167,11 @@ public class Post {
         this.summary = summary;
     }
 
-    public String getBody() { return body; }
+    public String getBody() {
+        return body;
+    }
 
-    public void setBody(String body) { this.body = body; }
-
+    public void setBody(String body) {
+        this.body = body;
+    }
 }

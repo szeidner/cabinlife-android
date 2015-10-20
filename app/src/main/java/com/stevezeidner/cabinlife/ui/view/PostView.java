@@ -1,11 +1,11 @@
 package com.stevezeidner.cabinlife.ui.view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.di.DaggerService;
 import com.stevezeidner.cabinlife.ui.screen.PostScreen;
@@ -15,16 +15,16 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PostView extends LinearLayout {
+public class PostView extends FrameLayout {
+
+    @Bind(R.id.post_photo)
+    public SimpleDraweeView photo;
+
+    @Bind(R.id.post_content)
+    public TextView content;
 
     @Inject
     protected PostScreen.Presenter presenter;
-
-    @Bind(R.id.rv)
-    public RecyclerView recyclerView;
-
-    @Bind(R.id.progress)
-    public ProgressBar progressBar;
 
     public PostView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,8 +32,6 @@ public class PostView extends LinearLayout {
     }
 
     public void show() {
-        progressBar.setVisibility(GONE);
-        recyclerView.setVisibility(VISIBLE);
     }
 
     @Override
