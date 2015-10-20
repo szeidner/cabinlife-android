@@ -5,6 +5,7 @@ import com.stevezeidner.cabinlife.network.model.Post;
 import java.util.List;
 
 import retrofit.http.GET;
+import retrofit.http.Path;
 import rx.Observable;
 
 /**
@@ -13,4 +14,7 @@ import rx.Observable;
 public interface PostsService {
     @GET("posts")
     Observable<List<Post>> getPosts();
+
+    @GET("post/{id}")
+    Observable<Post> getPost(@Path("id") int postId);
 }

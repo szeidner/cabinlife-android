@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import flow.Flow;
 import flow.path.Path;
 import mortar.ViewPresenter;
 import rx.Subscriber;
@@ -109,7 +110,7 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainActi
             if (!hasView()) return;
 
             Post post = posts.get(position);
-            //Flow.get(getView()).set(new ViewPostScreen(post));
+            Flow.get(getView()).set(new PostScreen(post));
         }
     }
 }

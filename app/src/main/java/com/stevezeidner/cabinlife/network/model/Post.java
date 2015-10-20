@@ -38,6 +38,9 @@ public class Post {
     @Expose
     private String summary;
 
+    @Expose
+    private String body;
+
     /**
      * @return The id
      */
@@ -163,5 +166,9 @@ public class Post {
     public void setSummary(String summary) {
         this.summary = summary;
     }
+
+    public String getBody() { return body; }
+
+    public void setBody(String body) { this.body = body; }
 
 }
