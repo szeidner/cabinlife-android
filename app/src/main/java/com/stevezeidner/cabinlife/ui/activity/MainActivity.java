@@ -1,6 +1,7 @@
 package com.stevezeidner.cabinlife.ui.activity;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +18,6 @@ import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
 import com.stevezeidner.cabinlife.di.DaggerService;
-import com.stevezeidner.cabinlife.flow.GsonParceler;
-import com.stevezeidner.cabinlife.flow.HandlesBack;
 import com.stevezeidner.cabinlife.ui.screen.PostsScreen;
 
 import butterknife.Bind;
@@ -26,8 +25,10 @@ import butterknife.ButterKnife;
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
-import flow.path.Path;
-import flow.path.PathContainerView;
+import flownavigation.common.flow.GsonParceler;
+import flownavigation.common.flow.HandlesBack;
+import flownavigation.path.Path;
+import flownavigation.path.PathContainerView;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -37,12 +38,18 @@ import static mortar.MortarScope.findChild;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Flow.Dispatcher {
 
-    @Bind(R.id.container) PathContainerView pathContainerView;
-    @Bind(R.id.nav_view) NavigationView navigationView;
-    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.container)
+    PathContainerView pathContainerView;
+    @Bind(R.id.nav_view)
+    NavigationView navigationView;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawer;
 
     MortarScope mortarScope;
     FlowDelegate flowDelegate;
+    ActionBarDrawerToggle toggle;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -77,11 +84,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // navdrawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-        toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
         // start flow
@@ -101,6 +106,18 @@ public class MainActivity extends AppCompatActivity
     protected void onPause() {
         flowDelegate.onPause();
         super.onPause();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -148,13 +165,13 @@ public class MainActivity extends AppCompatActivity
         if (((HandlesBack) pathContainerView).onBackPressed()) return;
         if (flowDelegate.onBackPressed()) return;
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -170,9 +187,21 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        } else {
+            if (item.getItemId() == android.R.id.home) {
+                onBackPressed();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     // Flow.Dispatcher
@@ -181,8 +210,10 @@ public class MainActivity extends AppCompatActivity
         Path path = traversal.destination.top();
         setTitle(path.getClass().getSimpleName());
         boolean canGoBack = traversal.destination.size() > 1;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(canGoBack);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(canGoBack);
+        toggle.setDrawerIndicatorEnabled(!canGoBack);
+        toggle.syncState();
 
         pathContainerView.dispatch(traversal, new Flow.TraversalCallback() {
             @Override
@@ -192,6 +223,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
 
     @dagger.Component(dependencies = CabinLifeApplication.Component.class)
     @DaggerScope(Component.class)

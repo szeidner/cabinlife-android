@@ -4,10 +4,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.stevezeidner.cabinlife.R;
-import com.stevezeidner.cabinlife.flow.FramePathContainerView;
-import com.stevezeidner.cabinlife.flow.SimplePathContainer;
 
-import flow.path.Path;
+import flownavigation.common.flow.FramePathContainerView;
+import flownavigation.common.flow.SimplePathContainer;
+import flownavigation.path.Path;
+
 
 public class MortarPathContainerView extends FramePathContainerView {
 

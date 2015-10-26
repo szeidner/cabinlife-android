@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.stevezeidner.cabinlife.di.DaggerService;
 
-import flow.path.Path;
+import flownavigation.path.Path;
 import mortar.MortarScope;
 
 public class ScreenScoper {

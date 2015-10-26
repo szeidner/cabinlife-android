@@ -6,14 +6,14 @@ import android.os.Bundle;
 import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
-import com.stevezeidner.cabinlife.flow.Layout;
 import com.stevezeidner.cabinlife.mortar.ScreenComponentFactory;
 import com.stevezeidner.cabinlife.network.model.Post;
 import com.stevezeidner.cabinlife.ui.activity.MainActivity;
 import com.stevezeidner.cabinlife.ui.view.PostView;
 
 import dagger.Provides;
-import flow.path.Path;
+import flownavigation.common.flow.Layout;
+import flownavigation.path.Path;
 import mortar.ViewPresenter;
 
 @Layout(R.layout.screen_post)

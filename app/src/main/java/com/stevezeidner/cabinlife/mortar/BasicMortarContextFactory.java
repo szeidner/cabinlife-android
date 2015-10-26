@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.view.LayoutInflater;
 
-import flow.path.Path;
-import flow.path.PathContextFactory;
+import flownavigation.path.Path;
+import flownavigation.path.PathContextFactory;
 import mortar.MortarScope;
 import timber.log.Timber;
 

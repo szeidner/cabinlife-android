@@ -7,7 +7,6 @@ import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.adapter.PostAdapter;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
-import com.stevezeidner.cabinlife.flow.Layout;
 import com.stevezeidner.cabinlife.mortar.ScreenComponentFactory;
 import com.stevezeidner.cabinlife.network.RestClient;
 import com.stevezeidner.cabinlife.network.model.Post;
@@ -20,7 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import flow.Flow;
-import flow.path.Path;
+import flownavigation.common.flow.Layout;
+import flownavigation.path.Path;
 import mortar.ViewPresenter;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
