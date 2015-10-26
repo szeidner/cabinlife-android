@@ -50,6 +50,7 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainActi
 
         private PostAdapter adapter;
         private List<Post> posts = new ArrayList<>();
+        private int position;
 
         @Inject
         public Presenter(RestClient restClient) {
@@ -67,6 +68,8 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainActi
 
             if (posts.isEmpty()) {
                 load();
+            } else {
+                setPosition(position);
             }
         }
 
@@ -105,10 +108,20 @@ public class PostsScreen extends Path implements ScreenComponentFactory<MainActi
                     });
         }
 
+        private void setPosition(int position) {
+            getView().recyclerView.scrollToPosition(position);
+        }
+
+        @Override
+        protected void onSave(Bundle outState) {
+            super.onSave(outState);
+        }
+
         @Override
         public void onItemClick(int position) {
             if (!hasView()) return;
 
+            this.position = position;
             Post post = posts.get(position);
             Flow.get(getView()).set(new PostScreen(post));
         }
