@@ -29,6 +29,7 @@ import flownavigation.common.flow.GsonParceler;
 import flownavigation.common.flow.HandlesBack;
 import flownavigation.path.Path;
 import flownavigation.path.PathContainerView;
+import io.fabric.sdk.android.Fabric;
 import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Crashlytics.start(this);
+        Fabric.with(this, new Crashlytics());
 
         mortarScope = MortarScope.findChild(getApplicationContext(), getScopeName());
         if (mortarScope == null) {

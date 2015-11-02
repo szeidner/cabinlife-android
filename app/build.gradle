@@ -1,23 +1,23 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url 'http://download.crashlytics.com/maven' }
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.6'
-        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
 repositories {
     jcenter()
-    maven { url 'http://download.crashlytics.com/maven' }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'crashlytics'
+apply plugin: 'io.fabric'
 apply plugin: 'com.neenbedankt.android-apt'
 
 
@@ -92,8 +92,10 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
     // crashlytics
-    compile 'com.crashlytics.android:crashlytics:1.+'
 
     // logging
     compile 'com.jakewharton.timber:timber:4.0.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
+        transitive = true;
+    }
 }

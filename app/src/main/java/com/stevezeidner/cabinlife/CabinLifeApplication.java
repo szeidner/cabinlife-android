@@ -9,6 +9,7 @@ import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
 import com.stevezeidner.cabinlife.di.DaggerService;
 
+import io.fabric.sdk.android.Fabric;
 import mortar.MortarScope;
 import timber.log.Timber;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -30,7 +31,7 @@ public class CabinLifeApplication extends Application {
         }
 
         // start Crashlytics
-        Crashlytics.start(this);
+        Fabric.with(this, new Crashlytics());
 
         // start leak detection
         LeakCanary.install(this);
