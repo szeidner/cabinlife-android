@@ -12,7 +12,7 @@ import rx.Observable;
  * Created by szeidner on 10/9/15.
  */
 public interface PostsService {
-    @GET("posts")
+    @GET("post")
     Observable<List<Post>> getPosts();
 
     @GET("post/{id}")

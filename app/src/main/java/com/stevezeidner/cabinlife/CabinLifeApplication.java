@@ -50,7 +50,7 @@ public class CabinLifeApplication extends Application {
 
         // custom fonts
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                        .setDefaultFontPath("fonts/Montserrat-UltraLight.ttf")
+                        .setDefaultFontPath("fonts/Montserrat-UltraLight.otf")
                         .setFontAttrId(R.attr.fontPath)
                         .build()
         );

@@ -20,7 +20,6 @@ import mortar.ViewPresenter;
 public class PostScreen extends Path implements ScreenComponentFactory<MainActivity.Component> {
 
     private Post post;
-
     public PostScreen(Post post) {
         this.post = post;
     }
