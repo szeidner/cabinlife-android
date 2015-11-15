@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.stevezeidner.cabinlife.R;
 import com.stevezeidner.cabinlife.adapter.PostAdapter;
+import com.stevezeidner.cabinlife.core.CabinLifePath;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
 import com.stevezeidner.cabinlife.mortar.ScreenComponentFactory;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 
 import flow.Flow;
 import flownavigation.common.flow.Layout;
-import flownavigation.path.Path;
 import mortar.ViewPresenter;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,7 +28,11 @@ import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 @Layout(R.layout.screen_posts)
-public class PostsScreen extends Path implements ScreenComponentFactory<MainActivity.Component> {
+public class PostsScreen extends CabinLifePath implements ScreenComponentFactory<MainActivity.Component> {
+
+    public PostsScreen() {
+        setTitle("Home");
+    }
 
     @Override
     public Object createComponent(MainActivity.Component parent) {

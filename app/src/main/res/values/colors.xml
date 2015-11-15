@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#cccccc</color>
+    <color name="colorPrimaryDark">#333333</color>
     <color name="textColorPrimary">#000000</color>
     <color name="colorAccent">#6cb3c5</color>
     <color name="colorNav">#303135</color>
 
-    <color name="postTitle">#0e0e0e</color>
-    <color name="postDescription">#000000</color>
-    <color name="postLocation">#d6d6d6</color>
+    <color name="postTitle">#ffffff</color>
+    <color name="postPosted">#aaffffff</color>
+    <color name="postBody">#1a1a1a</color>
 </resources>

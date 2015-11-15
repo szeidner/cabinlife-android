@@ -15,6 +15,7 @@ import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.stevezeidner.cabinlife.CabinLifeApplication;
 import com.stevezeidner.cabinlife.R;
+import com.stevezeidner.cabinlife.core.CabinLifePath;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
 import com.stevezeidner.cabinlife.di.DaggerService;
@@ -27,7 +28,6 @@ import flow.FlowDelegate;
 import flow.History;
 import flownavigation.common.flow.GsonParceler;
 import flownavigation.common.flow.HandlesBack;
-import flownavigation.path.Path;
 import flownavigation.path.PathContainerView;
 import io.fabric.sdk.android.Fabric;
 import mortar.MortarScope;
@@ -208,8 +208,9 @@ public class MainActivity extends AppCompatActivity
     // Flow.Dispatcher
     @Override
     public void dispatch(Flow.Traversal traversal, final Flow.TraversalCallback callback) {
-        Path path = traversal.destination.top();
-        setTitle(path.getClass().getSimpleName());
+        CabinLifePath path = traversal.destination.top();
+
+        setTitle(path.getTitle());
         boolean canGoBack = traversal.destination.size() > 1;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(canGoBack);

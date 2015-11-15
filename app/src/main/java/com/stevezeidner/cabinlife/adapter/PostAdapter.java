@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.stevezeidner.cabinlife.R;
+import com.stevezeidner.cabinlife.core.Utility;
 import com.stevezeidner.cabinlife.network.model.Post;
 
 import java.util.List;
@@ -41,8 +42,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = posts.get(i);
 
         viewHolder.title.setText(post.getTitle());
-        viewHolder.description.setText(post.getSummary());
-        viewHolder.location.setText(post.getLatitude() + ", " + post.getLongitude());
+        viewHolder.posted.setText(Utility.getTimeDifference(post.getPublishedAt()));
         viewHolder.photo.setImageURI(Uri.parse(post.getImage()));
     }
 
@@ -57,10 +57,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public SimpleDraweeView photo;
         @Bind(R.id.row_posts_title)
         public TextView title;
-        @Bind(R.id.row_posts_location)
-        public TextView location;
-        @Bind(R.id.row_posts_description)
-        public TextView description;
+        @Bind(R.id.row_posts_posted)
+        public TextView posted;
 
         private Listener listener;
 

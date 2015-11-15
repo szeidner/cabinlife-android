@@ -3,6 +3,7 @@ package com.stevezeidner.cabinlife.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -22,6 +23,9 @@ public class PostView extends FrameLayout {
 
     @Bind(R.id.post_content)
     public TextView content;
+
+    @Bind(R.id.post_scrollview)
+    public ScrollView scrollView;
 
     @Inject
     protected PostScreen.Presenter presenter;

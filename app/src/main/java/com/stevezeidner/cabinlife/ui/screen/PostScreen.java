@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.stevezeidner.cabinlife.R;
+import com.stevezeidner.cabinlife.core.CabinLifePath;
 import com.stevezeidner.cabinlife.di.AppDependencies;
 import com.stevezeidner.cabinlife.di.DaggerScope;
 import com.stevezeidner.cabinlife.mortar.ScreenComponentFactory;
@@ -13,15 +14,15 @@ import com.stevezeidner.cabinlife.ui.view.PostView;
 
 import dagger.Provides;
 import flownavigation.common.flow.Layout;
-import flownavigation.path.Path;
 import mortar.ViewPresenter;
 
 @Layout(R.layout.screen_post)
-public class PostScreen extends Path implements ScreenComponentFactory<MainActivity.Component> {
+public class PostScreen extends CabinLifePath implements ScreenComponentFactory<MainActivity.Component> {
 
     private Post post;
     public PostScreen(Post post) {
         this.post = post;
+        setTitle(post.getTitle());
     }
 
     @Override
@@ -67,6 +68,7 @@ public class PostScreen extends Path implements ScreenComponentFactory<MainActiv
         private void load() {
             getView().photo.setImageURI(Uri.parse(post.getImage()));
             getView().content.setText(post.getBody());
+            getView().scrollView.smoothScrollTo(0,0);
         }
     }
 }
